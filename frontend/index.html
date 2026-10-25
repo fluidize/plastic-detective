@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Plastic Detective</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Commissioner:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/assets/style.css">
+</head>
+<body>
+  <div class="app">
+    <aside class="sidebar">
+      <h1>Plastic Detective</h1>
+      <nav>
+        <button class="nav-item active" data-view="analysis">Analysis</button>
+        <button class="nav-item" data-view="recycling">Recycling</button>
+        <button class="nav-item" data-view="litter">Litter Log</button>
+      </nav>
+    </aside>
+
+    <main class="content">
+      <section id="view-analysis" class="view">
+        <form id="scan-form">
+          <div class="row">
+            <input id="barcode" name="barcode" type="text" inputmode="numeric" maxlength="12" placeholder="Enter 12-digit barcode" required>
+            <button type="submit">Scan</button>
+          </div>
+
+          <details id="usage">
+            <summary>Usage context (optional)</summary>
+            <div class="usage-grid">
+              <label>Contents
+                <select name="contents">
+                  <option value="">Unknown</option>
+                  <option>Water</option>
+                  <option>Soda / Acidic</option>
+                  <option>Juice</option>
+                  <option>Oil / Fat</option>
+                  <option>Alcohol</option>
+                  <option>Other</option>
+                </select>
+              </label>
+              <label><input type="checkbox" name="microwaved"> Microwaved / heated</label>
+              <label><input type="checkbox" name="reused"> Reused</label>
+              <label><input type="checkbox" name="dishwashed"> Dishwashed</label>
+              <label><input type="checkbox" name="sun_exposed"> Left in sun / hot car</label>
+              <label>Notes <input type="text" name="notes" placeholder="Any other usage details"></label>
+            </div>
+          </details>
+        </form>
+
+        <p id="status"></p>
+        <div id="analysis" class="card" hidden></div>
+      </section>
+
+      <section id="view-recycling" class="view" hidden>
+        <h2>Nearby recycling centers</h2>
+        <button id="recycle-btn">Find recycling near me</button>
+        <p id="recycling-status"></p>
+        <ul id="recycling-list" class="places" hidden></ul>
+      </section>
+
+      <section id="view-litter" class="view" hidden>
+        <h2>Litter Log</h2>
+        <ul id="litter-list"></ul>
+        <form id="litter-form">
+          <input name="type" type="text" placeholder="Type" required>
+          <input name="longitude" type="number" step="any" placeholder="Longitude" required>
+          <input name="latitude" type="number" step="any" placeholder="Latitude" required>
+          <button type="submit">Add</button>
+          <button type="button" id="cancel-edit" hidden>Cancel</button>
+        </form>
+      </section>
+    </main>
+  </div>
+
+  <script src="/assets/app.js"></script>
+</body>
+</html>

@@ -1,4 +1,5 @@
 import requests
+from bs4 import BeautifulSoup
 
 from searxng_wrapper import SearxngWrapper
 from searxng_wrapper.types import SearchResponse
@@ -28,3 +29,17 @@ class SearxNG(SearxngWrapper):
             {"title": item.title, "url": item.url, "content": item.content or ""}
             for item in response.results
         ]
+
+    def fetch_text(self, url: str, max_chars: int = 4000) -> str:
+        try:
+            r = requests.get(
+                url,
+                headers={"User-Agent": "Mozilla/5.0"},
+                timeout=15,
+            )
+            soup = BeautifulSoup(r.text, "html.parser")
+            for tag in soup(["script", "style", "nav", "footer", "header"]):
+                tag.decompose()
+            return " ".join(soup.get_text(" ").split())[:max_chars]
+        except Exception:
+            return ""
