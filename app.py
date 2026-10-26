@@ -1,3 +1,4 @@
+import json
 import sys
 import threading
 import uuid
@@ -5,7 +6,7 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, send_file
 
 from src.api.endpoints import Geoapify
 from src.config import CONFIG, SECRETS
@@ -39,8 +40,29 @@ def index():
     return render_template("index.html")
 
 
+@app.get("/logo.png")
+def logo():
+    return send_file(Path(__file__).resolve().parent / "logo.png", mimetype="image/png")
+
+
+CONFIG_PATH = Path(__file__).resolve().parent / "config.json"
+
+
 @app.get("/api/config")
 def config():
+    return CONFIG
+
+
+@app.put("/api/config")
+def update_config():
+    data = request.get_json(silent=True)
+    if not isinstance(data, dict):
+        return {"error": "config must be a JSON object"}, 400
+    with open(CONFIG_PATH, "w", encoding="utf-8") as f:
+        json.dump(data, f, indent=2)
+        f.write("\n")
+    CONFIG.clear()
+    CONFIG.update(data)
     return CONFIG
 
 

@@ -43,6 +43,13 @@ body {
   text-align: center;
 }
 
+.logo {
+  display: block;
+  width: 58px;
+  height: 58px;
+  margin: 0 auto 0.85rem;
+}
+
 nav {
   display: flex;
   flex-direction: column;
@@ -181,7 +188,17 @@ button:disabled {
   display: none;
 }
 
-#status.loading::before {
+#recycling-status {
+  display: flex;
+  align-items: center;
+  gap: 0.5em;
+}
+
+#recycling-status:empty {
+  display: none;
+}
+
+.loading::before {
   content: "";
   display: inline-block;
   flex: none;
@@ -352,12 +369,63 @@ input[type="checkbox"] {
 }
 
 .field h3 {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
   margin: 0 0 0.4rem;
   font-size: 0.78rem;
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.06em;
   color: var(--muted);
+}
+
+.info-icon {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.15em;
+  height: 1.15em;
+  font-size: 0.9em;
+  font-weight: 700;
+  font-style: normal;
+  text-transform: none;
+  letter-spacing: 0;
+  color: var(--muted);
+  border: 1px solid var(--border);
+  border-radius: 50%;
+  cursor: help;
+}
+
+.info-icon .tooltip {
+  position: absolute;
+  bottom: 160%;
+  left: 50%;
+  z-index: 10;
+  width: 230px;
+  padding: 0.55rem 0.65rem;
+  font-size: 0.75rem;
+  font-weight: 400;
+  font-style: normal;
+  line-height: 1.35;
+  text-transform: none;
+  letter-spacing: 0;
+  text-align: left;
+  color: var(--text);
+  background: var(--panel-2);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transform: translateX(-50%);
+}
+
+.info-icon:hover .tooltip,
+.info-icon:focus .tooltip {
+  opacity: 1;
+  visibility: visible;
 }
 
 .tags {
@@ -411,6 +479,16 @@ input[type="checkbox"] {
   border-radius: 999px;
 }
 
+#map,
+#litter-map {
+  width: 100%;
+  height: 360px;
+  margin-bottom: 1rem;
+  background: var(--panel-2);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+}
+
 .places {
   list-style: none;
   padding: 0;
@@ -448,6 +526,113 @@ input[type="checkbox"] {
 
 .place-link:hover {
   text-decoration: underline;
+}
+
+#settings-form {
+  flex-direction: column;
+  align-items: stretch;
+  gap: 0.75rem;
+  max-width: 480px;
+}
+
+#settings-form label {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  font-size: 0.85rem;
+  color: var(--muted);
+}
+
+#settings-form button {
+  align-self: flex-start;
+}
+
+#settings-status {
+  color: var(--muted);
+  margin: 0;
+}
+
+.tutorial-btn {
+  width: 100%;
+  margin-top: 1.5rem;
+  padding: 0.6rem 0.8rem;
+  font-family: inherit;
+  font-size: 0.9rem;
+  text-align: left;
+  color: var(--muted);
+  background: transparent;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.tutorial-btn:hover {
+  background: var(--panel-2);
+}
+
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+  background: rgba(0, 0, 0, 0.65);
+}
+
+.modal {
+  position: relative;
+  width: 100%;
+  max-width: 760px;
+  min-height: 70vh;
+  max-height: 92vh;
+  overflow: auto;
+  padding: 2rem;
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+}
+
+.modal h2 {
+  margin: 0 2rem 0.5rem 0;
+  color: #dde6b8;
+}
+
+.modal-close {
+  position: absolute;
+  top: 0.5rem;
+  right: 0.7rem;
+  padding: 0.2rem 0.5rem;
+  font-size: 1.5rem;
+  line-height: 1;
+  color: var(--muted);
+  background: transparent;
+  border: none;
+}
+
+.modal-close:hover {
+  color: var(--text);
+  background: transparent;
+}
+
+.tutorial-steps {
+  margin: 1rem 0;
+  padding-left: 1.2rem;
+}
+
+.tutorial-steps li {
+  margin: 0.6rem 0;
+}
+
+.tutorial-note {
+  margin: 1rem 0;
+  color: var(--muted);
+  font-size: 0.85rem;
+}
+
+.modal-primary {
+  margin-top: 0.5rem;
 }
 
 @media (max-width: 640px) {

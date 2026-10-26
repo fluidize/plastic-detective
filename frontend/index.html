@@ -7,28 +7,32 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Commissioner:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
   <link rel="stylesheet" href="/assets/style.css">
 </head>
 <body>
   <div class="app">
     <aside class="sidebar">
+      <img class="logo" src="/logo.png" alt="Plastic Detective logo">
       <h1>Plastic Detective</h1>
       <nav>
-        <button class="nav-item active" data-view="analysis">Analysis</button>
+        <button class="nav-item active" data-view="scan">Scan</button>
         <button class="nav-item" data-view="recycling">Recycling</button>
         <button class="nav-item" data-view="litter">Litter Log</button>
+        <button class="nav-item" data-view="settings">Settings</button>
       </nav>
+      <button id="tutorial-btn" class="tutorial-btn">Tutorial</button>
     </aside>
 
     <main class="content">
-      <section id="view-analysis" class="view">
+      <section id="view-scan" class="view">
         <form id="scan-form">
           <div class="row">
             <input id="barcode" name="barcode" type="text" inputmode="numeric" maxlength="12" placeholder="Enter 12-digit barcode" required>
             <button type="submit">Scan</button>
           </div>
 
-          <details id="usage">
+          <details id="usage" open>
             <summary>Usage context (optional)</summary>
             <div class="usage-grid">
               <label>Contents
@@ -57,6 +61,7 @@
 
       <section id="view-recycling" class="view" hidden>
         <h2>Nearby recycling centers</h2>
+        <div id="map"></div>
         <button id="recycle-btn">Find recycling near me</button>
         <p id="recycling-status"></p>
         <ul id="recycling-list" class="places" hidden></ul>
@@ -64,18 +69,57 @@
 
       <section id="view-litter" class="view" hidden>
         <h2>Litter Log</h2>
+        <div id="litter-map"></div>
         <ul id="litter-list"></ul>
         <form id="litter-form">
-          <input name="type" type="text" placeholder="Type" required>
+          <input name="type" type="text" placeholder="Type (e.g. Water Bottle)" required>
           <input name="longitude" type="number" step="any" placeholder="Longitude" required>
           <input name="latitude" type="number" step="any" placeholder="Latitude" required>
           <button type="submit">Add</button>
           <button type="button" id="cancel-edit" hidden>Cancel</button>
         </form>
       </section>
+
+      <section id="view-settings" class="view" hidden>
+        <h2>Settings</h2>
+        <form id="settings-form">
+          <label>SearXNG URL
+            <input name="searxng_url" type="url" placeholder="https://searx.example.com">
+          </label>
+          <label>Max search results
+            <input name="max_search_results" type="number" min="1" max="50">
+          </label>
+          <label>LLM model
+            <select name="llm_model">
+              <option value="deepseek-v4.1-flash">DeepSeek V4.1 Flash</option>
+              <option value="glm-5.3-flash">GLM 5.3 Flash</option>
+              <option value="mimo-v2.6-flash">MiMo V2.6 Flash</option>
+            </select>
+          </label>
+          <button type="submit">Save</button>
+          <p id="settings-status"></p>
+        </form>
+      </section>
     </main>
   </div>
 
+  <div id="tutorial-modal" class="modal-overlay" hidden>
+    <div class="modal" role="dialog" aria-modal="true" aria-labelledby="tutorial-title">
+      <button id="tutorial-close" class="modal-close" aria-label="Close tutorial">&times;</button>
+      <h2 id="tutorial-title">Welcome to Plastic Detective</h2>
+      <p>Scan a product's packaging, see what it's made of, find places to recycle it, and log the litter you find or pick up.</p>
+      <ol class="tutorial-steps">
+        <li><strong>Scan</strong> - Enter a 12-digit barcode. Optionally open <em>Usage context</em> (microwaved, reused, contents, notes) to improve the analysis. The app checks Open Food Facts, searches the web, and asks the LLM for the packaging material, polymers, additives, warnings, risk notes, and confidence.</li>
+        <li><strong>Recycling</strong> - Press <em>Find recycling near me</em> to use your location. The map shows nearby recycling points (OpenStreetMap), and the list gives distances plus Google Maps links.</li>
+        <li><strong>Litter Log</strong> - Click the map to fill select a coordinate, type in a litter type, and add it. You can edit or delete entries at any time.</li>
+        <li><strong>Settings</strong> - Change the SearXNG URL, number of search results, and the LLM model.</li>
+      </ol>
+      <p class="tutorial-note">Confidence is the model's self-reported certainty (0–100%) that the packaging details are correct — it is not a risk score.</p>
+      <button id="tutorial-dismiss" class="modal-primary">Got it</button>
+    </div>
+  </div>
+
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
   <script src="/assets/app.js"></script>
 </body>
 </html>
